@@ -39,8 +39,6 @@ def loop(world, display, block_size):
 
     while not end:
         for event in pg.event.get():
-            print(event)
-
             if event.type == pg.QUIT:
                 pg.quit()
                 end = True
