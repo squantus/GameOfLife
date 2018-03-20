@@ -39,14 +39,11 @@ def loop(world, display, block_size):
 
     while not end:
         for event in pg.event.get():
+            print(event)
+
             if event.type == pg.QUIT:
                 pg.quit()
                 end = True
-
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_SPACE:
-                    pg.quit()
-                    end = True
 
         if not world.update():
             end = True
