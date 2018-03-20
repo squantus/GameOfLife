@@ -1,4 +1,5 @@
 import pygame as pg
+from random import randrange as rnd
 
 
 def init(display_size=(800, 600)):
@@ -10,11 +11,28 @@ def init(display_size=(800, 600)):
     return display
 
 
-def draw(world, display_size=(800, 600)):
-    return
+def draw(world, display, block_size):
+    field = world.get_field()
+
+    for i in range(len(field)):
+        for j in range(len(field[i])):
+            if field[i][j] == '.':
+                color = (rnd(130, 180), 255, 255)
+            elif field[i][j] == '#':
+                color = (160, 160, 160)
+            elif field[i][j] == 'F':
+                color = (102, 255, 178)
+            elif field[i][j] == 'C':
+                color = (255, 204, 255)
+            else:
+                color = (0, 0, 0)
+
+            pg.draw.rect(display, color,
+                         pg.Rect(j * block_size, i * block_size, block_size,
+                                 block_size))
 
 
-def loop(world, display, display_size=(800, 600)):
+def loop(world, display, block_size):
     clock = pg.time.Clock()
     fps = 10
     end = False
@@ -25,9 +43,16 @@ def loop(world, display, display_size=(800, 600)):
                 pg.quit()
                 end = True
 
-        if not world.update():
-            end = False
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    pg.quit()
+                    end = True
 
-        draw(world, display_size)
+        if not world.update():
+            end = True
+
+        display.fill((0, 0, 0))
+        draw(world, display, block_size)
         pg.display.update()
+
         clock.tick(fps)

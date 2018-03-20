@@ -24,10 +24,15 @@ class World:
         for line in file:
             new_field.append(list(line))
 
-        if input_file != 'stdin':
-            file.close()
+            if len(new_field) == len(self._field):
+                break
+
+        file.close()
 
         self._field = new_field
+
+    def get_field(self):
+        return self._field
 
     def _save_state(self):
         if self._output_file == 'stdout':
