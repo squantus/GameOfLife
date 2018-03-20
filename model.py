@@ -3,7 +3,8 @@ from collections import defaultdict
 
 class World:
     def __init__(self, size_of_world=(3, 5),  # load from file in init?
-                 number_of_generations=-1, mode='every_turn', file=None):
+                 number_of_generations=-1, mode='every_turn',
+                 loading_file=None, saving_file=None):
         if type(size_of_world) != tuple:
             return  # some kind of exception here
 
@@ -20,19 +21,40 @@ class World:
         self._field = [['.' for j in range(self._width)] for i in
                        range(self._height)]
 
-        if file is not None:
-            self._load_state(file)
+        if loading_file is not None:
+            if type(loading_file) != str:
+                return
 
-    def _load_state(self, file=None):
-        if file is None:
-            return
+        if saving_file is None:
+            self._saving_file = 'state.out'
+        else:
+            if type(saving_file) != str:
+                return
 
-    def _save_state(self, file=None):
-        if file is None:
-            return
+            self._saving_file = saving_file
 
-    def _rules(self, cell='.', neighbors=None):
+    def _save_state(self):
         return
+
+    @staticmethod
+    def _rules(cell, neighbors):
+        if cell == '#':
+            return '#'
+        elif cell == '.':
+            if neighbors['F'] == 3:
+                return 'F'
+            elif neighbors['C'] == 3:
+                return 'C'
+        elif cell == 'F':
+            if neighbors['F'] >= 4 or neighbors['F'] < 2:
+                return '.'
+            else:
+                return 'F'
+        elif cell == 'C':
+            if neighbors['C'] >= 4 or neighbors['C'] < 2:
+                return '.'
+            else:
+                return 'C'
 
     def update(self):
         if self._current_generation < self._number_of_generations or \
@@ -50,6 +72,12 @@ class World:
                         for dj in range(-1, 2):
                             if di == dj == 0:
                                 continue
+                            if i + di < 0 or i + di >= self._height:
+                                neighbors['.'] += 1
+                            elif j + dj < 0 or j + dj >= self._width:
+                                neighbors['.'] += 1
+                            else:
+                                neighbors[self._field[i + di][j + dj]] += 1
 
                     new_field[i][j] = self._rules(self._field[i][j], neighbors)
 
