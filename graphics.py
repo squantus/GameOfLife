@@ -1,7 +1,7 @@
 import pygame as pg
 
 
-def _init(display_size=(800, 600)):
+def init(display_size=(800, 600)):
     pg.init()
 
     display = pg.display.set_mode(display_size)
@@ -10,11 +10,11 @@ def _init(display_size=(800, 600)):
     return display
 
 
-def _draw(file, display_size=(800, 600)):
+def draw(world, display_size=(800, 600)):
     return
 
 
-def _loop(display):
+def loop(world, display, display_size=(800, 600)):
     clock = pg.time.Clock()
     fps = 10
     end = False
@@ -25,5 +25,9 @@ def _loop(display):
                 pg.quit()
                 end = True
 
+        if not world.update():
+            end = False
+
+        draw(world, display_size)
         pg.display.update()
         clock.tick(fps)
