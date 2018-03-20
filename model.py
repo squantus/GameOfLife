@@ -25,6 +25,24 @@ class World:
             if type(loading_file) != str:
                 return
 
+            file = open(loading_file)
+
+            new_field = []
+
+            for line in file:
+                if len(line) != self._width:
+                    file.close()
+                    return
+
+                new_field.append(list(line))
+
+            file.close()
+
+            if len(new_field) != self._height:
+                return
+
+            self._field = new_field
+
         if saving_file is None:
             self._saving_file = 'state.out'
         else:
@@ -34,7 +52,12 @@ class World:
             self._saving_file = saving_file
 
     def _save_state(self):
-        return
+        file = open(self._saving_file, 'w')
+
+        for line in self._field:
+            file.write(''.join(line) + '\n')
+
+        file.close()
 
     @staticmethod
     def _rules(cell, neighbors):
