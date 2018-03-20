@@ -2,17 +2,8 @@ from collections import defaultdict
 
 
 class World:
-    def __init__(self, size_of_world=(3, 5),  # load from file in init?
-                 number_of_generations=-1, mode='every_turn',
-                 loading_file=None, saving_file=None):
-        if type(size_of_world) != tuple:
-            return  # some kind of exception here
-
-        if type(number_of_generations) != int:
-            return  # and here
-
-        if mode != 'every_turn' and mode != 'just_result':
-            return  # and here, too
+    def __init__(self, size_of_world=(3, 5), number_of_generations=-1,
+                 mode='every_turn', loading_file=None, saving_file=None):
 
         self._width, self._height = size_of_world
         self._number_of_generations = number_of_generations
@@ -22,9 +13,6 @@ class World:
                        range(self._height)]
 
         if loading_file is not None:
-            if type(loading_file) != str:
-                return
-
             file = open(loading_file)
 
             new_field = []
@@ -32,23 +20,20 @@ class World:
             for line in file:
                 if len(line) != self._width:
                     file.close()
-                    return
+                    return  # here
 
                 new_field.append(list(line))
 
             file.close()
 
             if len(new_field) != self._height:
-                return
+                return  # here
 
             self._field = new_field
 
         if saving_file is None:
             self._saving_file = 'state.out'
         else:
-            if type(saving_file) != str:
-                return
-
             self._saving_file = saving_file
 
     def _save_state(self):
