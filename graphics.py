@@ -12,7 +12,7 @@ def init(display_size=(800, 600)):
 
 
 def draw(world, display, block_size):
-    field = world.get_field()
+    field = world.get_field_log()
 
     for i in range(len(field)):
         for j in range(len(field[i])):
@@ -22,7 +22,7 @@ def draw(world, display, block_size):
                 color = (160, 160, 160)
             elif field[i][j] == 'F':
                 color = (102, 255, 178)
-            elif field[i][j] == 'C':
+            elif field[i][j] == 'S':
                 color = (255, 204, 255)
             else:
                 color = (0, 0, 0)

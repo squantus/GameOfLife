@@ -15,8 +15,8 @@ def main():
     parser.add_argument('--width_of_world', type=int, default=1,
                         help='Width of World(1 as default)')
 
-    parser.add_argument('--cells', type=str, default='. # F C',
-                        help='All types of cells(\'. # F C\' as default)')
+    parser.add_argument('--cells', type=str, default='. # F S',
+                        help='All types of cells(\'. # F S\' as default)')
 
     args = parser.parse_args()
 
