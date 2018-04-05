@@ -35,7 +35,7 @@ class EmptyCell(Cell):
                 alive_cells[cell.name()] = cell
 
         for key in alive_count.keys():
-            if alive_count[key] >= 3:
+            if alive_count[key] == 3:
                 return alive_cells[key]
 
         return self
@@ -114,7 +114,7 @@ class World:
                 elif self._field_log[i][j] == 'F':
                     self._field[i][j] = Fish()
                 elif self._field_log[i][j] == 'S':
-                    self._field[i][i] = Shrimp()
+                    self._field[i][j] = Shrimp()
 
     def get_field_log(self):
         return self._field_log
