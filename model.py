@@ -80,12 +80,13 @@ class World:
     def __init__(self, size_of_world, number_of_generations, mode,
                  input_file, output_file):
 
+        self.CELL_TYPES = {'.': EmptyCell, '#': Rock, 'F': Fish, 'S': Shrimp}
         self._width, self._height = size_of_world
         self._number_of_generations = number_of_generations
         self._current_generation = 0
         self._mode = mode
         self._output_file = output_file
-        self._field = [[EmptyCell() for j in range(self._width)] for i in
+        self._field = [[Cell() for j in range(self._width)] for i in
                        range(self._height)]
 
         if input_file == 'stdin':
@@ -93,28 +94,32 @@ class World:
         else:
             file = open(input_file)
 
-        new_field = []
+        new_field_log = []
 
         for line in file:
-            new_field.append(list(line))
+            new_field_log.append(list(line))
 
-            if len(new_field) == len(self._field):
+            if len(new_field_log) == len(self._field):
                 break
 
         file.close()
 
-        self._field_log = new_field
+        self._field_log = new_field_log
+
+        bad_launch = False
 
         for i in range(self._height):
             for j in range(self._width):
-                if self._field_log[i][j] == '.':
-                    self._field[i][j] = EmptyCell()
-                elif self._field_log[i][j] == '#':
-                    self._field[i][j] = Rock()
-                elif self._field_log[i][j] == 'F':
-                    self._field[i][j] = Fish()
-                elif self._field_log[i][j] == 'S':
-                    self._field[i][j] = Shrimp()
+                log_name = self._field_log[i][j]
+
+                try:
+                    self._field[i][j] = self.CELL_TYPES[log_name]()
+                except KeyError:
+                    print('Wrong cell at {} {}: {}'.format(i, j, log_name))
+                    bad_launch = True
+
+        if bad_launch:
+            quit()
 
     def get_field_log(self):
         return self._field_log
