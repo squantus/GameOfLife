@@ -1,6 +1,10 @@
 import sys
 from collections import defaultdict
 
+ANIMAL_BIRTH = 3
+ANIMAL_LONELINESS = 2
+ANIMAL_OVERFLOW = 4
+
 
 class Cell:
     @staticmethod
@@ -35,7 +39,7 @@ class EmptyCell(Cell):
                 alive_cells[cell.name()] = cell
 
         for key in alive_count.keys():
-            if alive_count[key] == 3:
+            if alive_count[key] == ANIMAL_BIRTH:
                 return alive_cells[key]
 
         return self
@@ -58,7 +62,7 @@ class Animal(Cell):
             if cell.name() == self.name():
                 count += 1
 
-        if count >= 4 or count < 2:
+        if count >= ANIMAL_OVERFLOW or count < ANIMAL_LONELINESS:
             return EmptyCell()
         else:
             return self
@@ -138,7 +142,7 @@ class World:
 
     def update(self):
         if self._current_generation < self._number_of_generations or \
-                self._number_of_generations == -1:
+                self._number_of_generations < 0:
             self._current_generation += 1
 
             new_field = [[EmptyCell() for j in range(self._width)] for i in

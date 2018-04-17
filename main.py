@@ -2,6 +2,9 @@ import model
 import argparse
 import graphics
 
+DISPLAY_WIDTH = 800
+DISPLAY_HEIGHT = 600
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -27,8 +30,9 @@ def main():
                         help='Width of World(1 as default)')
 
     parser.add_argument('--number_of_generations', type=int, default=-1,
-                        help='Number of generations(infinite as default)\n' +
-                             'Should be infinite only in graphical mode')
+                        help='Number of generations(infinite if negative)\n' +
+                             'Should be infinite only in graphical mode\n' +
+                             '(infinite as default)')
 
     args = parser.parse_args()
 
@@ -37,13 +41,13 @@ def main():
                         args.mode, args.input_file, args.output_file)
 
     if args.graphical_mode == 'True':
-        block_size = min(800 // args.width_of_world,
-                         600 // args.height_of_world)
+        block_size = min(DISPLAY_WIDTH // args.width_of_world,
+                         DISPLAY_HEIGHT // args.height_of_world)
         display = graphics.init((args.width_of_world * block_size,
                                  args.height_of_world * block_size))
         graphics.loop(world, display, block_size)
 
-    while args.number_of_generations != -1 and world.update():
+    while args.number_of_generations < 0 and world.update():
         pass
 
 
